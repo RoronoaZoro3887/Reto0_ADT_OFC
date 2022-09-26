@@ -10,7 +10,26 @@ package model;
  * @author 2dam
  */
 public class ImplementBD implements InterfaceDAO{
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private final String createClient = "INSERT INTO customer(city, email, firstName, lastName, middleInitial, phone, state, street, zip) VALUES(?,?,?,?,?,?,?,?,?)";
+    private final String getDataClient = "SELECT * FROM customer WHERE id = ?";
+    private final String getAccountClient ="SELECT * FROM Account WHERE id = (SELECT id FORM customer WHERE id = ?)";
+    private final String makeAccountClient ="INSERT INTO Account(balance, beginBalance, beginBalanceTimestamp, creditLine, description, type) VALUES(?,?,?,?,?,?)";
+    private final String addClientAccount = "INSERT INTO customer_account(customers_id, accounts_id) VALUES(?,?)";  
+    private final String getDateAccount ="SELECT * FROM account WHERE id = ?";
+    private final String makeMovements = "INSERT INTO movement()";
     @Override
     public void createClient(Client cli) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
