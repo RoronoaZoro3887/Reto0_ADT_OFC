@@ -15,9 +15,8 @@ public class Movement {
     
     private Integer id;
     private String desc;
-    private Float balance;
-    private Float creditLine;
-    private Float beginBalance;
+    private Double balance;
+    private Double amount;
     private LocalDate bBTs;
     private Integer accountId;
 
@@ -41,28 +40,20 @@ public class Movement {
         this.desc = desc;
     }
 
-    public Float getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Float balance) {
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public void setBalance(Double balance) {
         this.balance = balance;
-    }
-
-    public Float getCreditLine() {
-        return creditLine;
-    }
-
-    public void setCreditLine(Float creditLine) {
-        this.creditLine = creditLine;
-    }
-
-    public Float getBeginBalance() {
-        return beginBalance;
-    }
-
-    public void setBeginBalance(Float beginBalance) {
-        this.beginBalance = beginBalance;
     }
 
     public LocalDate getbBTs() {

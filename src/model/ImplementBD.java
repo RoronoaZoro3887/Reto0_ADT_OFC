@@ -10,7 +10,9 @@ import com.mysql.jdbc.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -115,7 +117,9 @@ public class ImplementBD implements InterfaceDAO {
     @Override
     public Client getDataClient(Integer id) {
         ResultSet rs= null;
+        ResultSet rs2= null;
         Client cli = null;
+        Account ac=null;
         this.openConnection();
         
         try {
@@ -124,6 +128,7 @@ public class ImplementBD implements InterfaceDAO {
             
             rs= stmt.executeQuery();
             
+            Set<Account> accountList = null;
             while (rs.next()) {
                 cli = new Client();
 
@@ -137,9 +142,30 @@ public class ImplementBD implements InterfaceDAO {
                 cli.setState(rs.getString("state"));
                 cli.setStreet(rs.getString("street"));
                 cli.setZip(rs.getInt("state"));
-                
-                
+                PreparedStatement stmt2 = (PreparedStatement) 
+                        con.prepareStatement(getAccountClient);
+                stmt2.setInt(1, id);
+                rs2= stmt2.executeQuery();
+                 
+                while (rs2.next()) {  
+                    accountList= new HashSet<>();
+                    ac.setId(rs2.getInt("id"));
+                    ac.setBalance(rs2.getDouble("balance"));
+                    ac.setBeginBalance(rs2.getDouble("beginBalance"));
+                    ac.setbBTs(rs2.getDate("beginBalanceTimestamp")
+                            .toLocalDate());
+                    ac.setCreditLine(rs2.getDouble("creditLine"));
+                    ac.setDesc(rs2.getString("description"));
+
+                    if (rs2.getInt("type") == 1) {
+                        ac.setType(AccountType.STANDAR);
+                    } else {
+                        ac.setType(AccountType.CREDIT);
+                    }                       
+                }
+                accountList.add(ac);
             }
+            cli.setAccountList(accountList);
            
         } catch (SQLException ex) {
             Logger.getLogger(ImplementBD.class.getName())
@@ -162,21 +188,33 @@ public class ImplementBD implements InterfaceDAO {
     public Account getAccountClient(Integer id) {
         ResultSet rs= null;
         Account ac = null;
+        Set<Account> accountList = null;
         this.openConnection();
         
         try {
-            stmt= (PreparedStatement) con.prepareStatement(getDataClient);
-            stmt.setInt(1, id);
-            
-            rs= stmt.executeQuery();
-            
-            while (rs.next()) {
-                ac = new Account();
+         PreparedStatement stmt = (PreparedStatement) 
+                        con.prepareStatement(getAccountClient);
+                stmt.setInt(1, id);
+                rs= stmt.executeQuery();
+                 
+                while (rs.next()) {  
+                    accountList= new HashSet<>();
+                    ac.setId(rs.getInt("id"));
+                    ac.setBalance(rs.getDouble("balance"));
+                    ac.setBeginBalance(rs.getDouble("beginBalance"));
+                    ac.setbBTs(rs.getDate("beginBalanceTimestamp")
+                            .toLocalDate());
+                    ac.setCreditLine(rs.getDouble("creditLine"));
+                    ac.setDesc(rs.getString("description"));
 
-            
-                
-                
-            }
+                    if (rs.getInt("type") == 1) {
+                        ac.setType(AccountType.STANDAR);
+                    } else {
+                        ac.setType(AccountType.CREDIT);
+                    }                       
+                }
+                accountList.add(ac);
+           
            
         } catch (SQLException ex) {
             Logger.getLogger(ImplementBD.class.getName())
@@ -197,11 +235,22 @@ public class ImplementBD implements InterfaceDAO {
 
     @Override
     public void makeAccountClient(Integer id, Account ac) {
+         
        this.openConnection();
+      
         
         try {
             stmt = (PreparedStatement) con.prepareStatement(makeAccountClient);
             
+            stmt.setString(1, ac.getCity());
+            stmt.setString(2, ac.getEmail());
+            stmt.setString(3, ac.getFirstName());
+            stmt.setString(4, ac.getLastName());
+            stmt.setString(5, ac.getMiddleIntial());
+            stmt.setInt(6, ac.getPhone());
+            stmt.setString(7, ac.getState());
+            stmt.setString(8, ac.getStreet());
+            stmt.setInt(9, ac.getZip());
        
             stmt.executeUpdate();
             
