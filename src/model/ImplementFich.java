@@ -13,7 +13,7 @@ public class ImplementFich implements InterfaceDAO{
 
     @Override
     public void createClient(Client cli) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override

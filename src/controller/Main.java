@@ -42,12 +42,10 @@ public class Main {
 
                 case 1:
                     System.out.println("A continuación procederemos a solicitar los datos del cliente /n a crear");
-                 
-
-                    // if decidir que forma tratar dato (bd o ficheros)
+                           
                     break;
                 case 2:
-
+                    
                     break;
                 case 3:
 

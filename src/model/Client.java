@@ -7,6 +7,7 @@ package model;
 
 import java.util.HashSet;
 import java.util.Set;
+import utilidades.Util;
 
 /**
  *
@@ -116,6 +117,33 @@ public class Client {
     public void setAccountList(Set<Account> accountList) {
         this.accountList = accountList;
     }
-    
-    
+    public void setDatos(){     
+        this.firstName = Util.introducirCadena("Escribe el nombre");
+        this.middleIntial = Util.introducirCadena("Introduce el middleIntial");
+        this.lastName = Util.introducirCadena("Escribe los apellidos");
+        this.street = Util.introducirCadena("Escribe la dirección");     
+        this.city = Util.introducirCadena("Escribe la ciudad");
+        this.state = Util.introducirCadena("Escribe el estado");
+        this.zip = Util.leerInt("Introduce el codigo postal");
+        this.phone = Util.leerInt("Introduce el Telefono");
+        this.email = Util.introducirCadena("Escribe el Correo Electronico");  
+        
+    }
+    public void getDatos(){
+            System.out.println("Id de la cuenta" + this.id);
+            System.out.println("Nombre de Usuario:" + this.firstName);
+            System.out.println("middleIntial de Usuario:" + this.middleIntial);
+            System.out.println("lastName de Usuario:" + this.lastName);
+            System.out.println("street de Usuario:" + this.street);
+            System.out.println("city de Usuario:" + this.city);
+            System.out.println("state de Usuario:" + this.state);
+            System.out.println("zip de Usuario:" + this.zip);
+            System.out.println("phone de Usuario:" + this.phone);
+            System.out.println("email de Usuario:" + this.email);
+            System.out.println("Cuentas del cliente:");
+            
+            for(Account A : accountList){
+                System.out.println(A.getId());
+        }
+    }
 }
