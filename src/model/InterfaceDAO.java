@@ -17,7 +17,7 @@ public interface InterfaceDAO {
    public void makeAccountClient(Integer id, Account ac);
    public void addClientAccount(Integer idcuen, Integer idcli);
    public Account getDateAccount(Integer id);
-   public void makeMovements(Integer id);
+   public void makeMovements(Integer id, Double blance, Double amount, String desc);
    public Movement getMovementAccount(Integer id);
        
    
