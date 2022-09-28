@@ -98,7 +98,6 @@ public class Account{
     
      public void setDatos(){     
          
-    
         this.desc = Util.introducirCadena("Escribe el desc");
         this.balance = Util.leerFloat("Introduce el balance");
         this.creditLine = Util.leerFloat("Escribe los creditLine");
@@ -109,6 +108,7 @@ public class Account{
         this.type = AccountType.STANDAR;
                    this.type = AccountType.CREDIT;
         }
+        
     }
    public void getDatos(){
    

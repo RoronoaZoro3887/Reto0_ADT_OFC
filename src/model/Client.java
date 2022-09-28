@@ -117,6 +117,15 @@ public class Client {
     public void setAccountList(Set<Account> accountList) {
         this.accountList = accountList;
     }
+    
+    public void crearCuentaCliente (){
+       String Correo = null;
+       Correo = Util.introducirCadena("Escribe el correo del cliente");
+      
+       Account acc = new Account();
+       acc.setDatos();
+       accountList.add(acc);
+    }
     public void setDatos(){     
         this.firstName = Util.introducirCadena("Escribe el nombre");
         this.middleIntial = Util.introducirCadena("Introduce el middleIntial");
@@ -128,7 +137,7 @@ public class Client {
         this.phone = Util.leerInt("Introduce el Telefono");
         this.email = Util.introducirCadena("Escribe el Correo Electronico");  
         
-    }
+    } 
     public void getDatos(){
             System.out.println("Id de la cuenta" + this.id);
             System.out.println("Nombre de Usuario:" + this.firstName);
