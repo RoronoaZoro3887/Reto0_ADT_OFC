@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.Set;
+
 /**
  *
  * @author 2dam
@@ -13,7 +15,7 @@ public interface InterfaceDAO {
     
    public void createClient (Client cli);
    public Client getDataClient(Integer id);
-   public Account getAccountClient(Integer id);
+   public Set<Account> getAccountClient(Integer id);
    public void makeAccountClient(Integer id, Account ac);
    public void addClientAccount(Integer idcuen, Integer idcli);
    public Account getDateAccount(Integer id);
