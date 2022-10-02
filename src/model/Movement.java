@@ -6,7 +6,9 @@
 package model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicInteger;
 import utilidades.Util;
 
 /**
@@ -14,24 +16,25 @@ import utilidades.Util;
  * @author 2dam
  */
 public class Movement implements Serializable {
-    
-    private Integer id;
+
+    private BigDecimal id;
     private String desc;
-    private Float balance;
-    private Float creditLine;
-    private Float beginBalance;
+    private Double balance; // dinero que tienes
+    private Double amount; // dinero que tienes
     private LocalDate bBTs;
-    private Integer accountId;
+    private BigDecimal accountId;
+    private static final AtomicInteger movementId = new AtomicInteger(0);
+    private BigDecimal IdIncremet;
 
     public Movement() {
-        
+
     }
 
-    public Integer getId() {
+    public BigDecimal getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(BigDecimal id) {
         this.id = id;
     }
 
@@ -43,28 +46,20 @@ public class Movement implements Serializable {
         this.desc = desc;
     }
 
-    public Float getBalance() {
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Float balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
-    }
-
-    public Float getCreditLine() {
-        return creditLine;
-    }
-
-    public void setCreditLine(Float creditLine) {
-        this.creditLine = creditLine;
-    }
-
-    public Float getBeginBalance() {
-        return beginBalance;
-    }
-
-    public void setBeginBalance(Float beginBalance) {
-        this.beginBalance = beginBalance;
     }
 
     public LocalDate getbBTs() {
@@ -75,32 +70,35 @@ public class Movement implements Serializable {
         this.bBTs = bBTs;
     }
 
-    public Integer getAccountId() {
+    public BigDecimal getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Integer accountId) {
+    public void setAccountId(BigDecimal accountId) {
         this.accountId = accountId;
     }
-      public void setDatos(){     
-         
-    
+
+    public void setDatos() {
+        IdIncremet = BigDecimal.valueOf(movementId.incrementAndGet());
+        this.id = IdIncremet;
         this.desc = Util.introducirCadena("Escribe el desc");
-        this.balance = Util.leerFloat("Introduce el balance");
-        this.creditLine = Util.leerFloat("Escribe los creditLine");
-        this.beginBalance = Util.leerFloat("Escribe la beginBalance");     
+        System.out.println("Introduce el balance");
+        this.balance = Util.leerDouble();
+        System.out.println("Introduce el amount");
+        this.amount = Util.leerDouble();
         this.bBTs = Util.leerFecha("Escribe la fecha");
-        this.accountId = Util.leerInt("Escribe id de la cuenta que realizara el movimiento");
-      
+        this.accountId = BigDecimal.valueOf(Util.leerInt("Escribe id de la cuenta que realizara el movimiento"));
+
     }
-   public void getDatos(){
-   
-            System.out.println("Descripcion del movimiento:" + this.desc);
-            System.out.println("Balance del movimiento:" + this.balance);
-            System.out.println("Linea de credito del movimiento:" + this.creditLine);
-            System.out.println("Balance inicial del movimiento:" + this.beginBalance);
-            System.out.println("Fecha del movimiento:" + this.bBTs);
-            System.out.println("Cuenta que realizo el movimiento:" + this.accountId);
-          
+
+    public void getDatos() {
+        System.out.println("--------------ID Movimiento " + this.id + "----------------------");
+        System.out.println("Descripcion del movimiento:" + this.desc);
+        System.out.println("Balance del movimiento:" + this.balance);
+        System.out.println("Balance del amount:" + this.amount);
+        System.out.println("Fecha del movimiento:" + this.bBTs);
+        System.out.println("Cuenta que realizo el movimiento:" + this.accountId);
+        System.out.println("----------------------------------------------------------");
+
     }
 }

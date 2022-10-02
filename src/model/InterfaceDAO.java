@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 /**
@@ -14,13 +15,13 @@ import java.util.Set;
 public interface InterfaceDAO {
     
    public void createClient (Client cli);
-   public Client getDataClient(Integer id);
-   public Set<Account> getAccountClient(Integer id);
-   public void makeAccountClient(Integer id, Account ac);
-   public void addClientAccount(Integer idcuen, Integer idcli);
-   public Account getDateAccount(Integer id);
-   public void makeMovements(Integer id);
-   public Movement getMovementAccount(Integer id);
+   public Client getDataClient(BigDecimal id);
+   public Set<Account> getAccountClient(BigDecimal id);
+   public void makeAccountClient(BigDecimal id, Account ac);
+   public void addClientAccount(BigDecimal idcuen, BigDecimal idcli);
+   public Account getDateAccount(BigDecimal id);
+   public void makeMovements(BigDecimal id, Double amount, String desc, Movement mov);
+   public Set<Movement> getMovementAccount(BigDecimal id);
        
    
     

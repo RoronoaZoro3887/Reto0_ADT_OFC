@@ -7,9 +7,9 @@ package model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import utilidades.Util;
 
 /**
@@ -17,22 +17,23 @@ import utilidades.Util;
  * @author 2dam
  */
 public class Account implements Serializable {
-    
+
     private Integer id;
     private String desc;
-    private Float balance;
-    private Float creditLine;
-    private Float beginBalance;
+    private Double balance;
+    private Double creditLine;
     private LocalDate bBTs;
     private AccountType type;
     private Set<Movement> movementList;
-   
+    private static final AtomicInteger accountId = new AtomicInteger(0); 
+    private Integer IdIncremet ;
+    
+
     public Account() {
         movementList = new HashSet<>();
+   
     }
 
-    
-    
     public Integer getId() {
         return id;
     }
@@ -49,28 +50,20 @@ public class Account implements Serializable {
         this.desc = desc;
     }
 
-    public Float getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Float balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
-    public Float getCreditLine() {
+    public Double getCreditLine() {
         return creditLine;
     }
 
-    public void setCreditLine(Float creditLine) {
+    public void setCreditLine(Double creditLine) {
         this.creditLine = creditLine;
-    }
-
-    public Float getBeginBalance() {
-        return beginBalance;
-    }
-
-    public void setBeginBalance(Float beginBalance) {
-        this.beginBalance = beginBalance;
     }
 
     public LocalDate getbBTs() {
@@ -96,34 +89,49 @@ public class Account implements Serializable {
     public void setMovementList(Set<Movement> movementList) {
         this.movementList = movementList;
     }
-    
-     public void setDatos(){     
-         
+
+    public void setDatos() {
+        IdIncremet= accountId.incrementAndGet();
+        this.id = IdIncremet;
         this.desc = Util.introducirCadena("Escribe el desc");
-        this.balance = Util.leerFloat("Introduce el balance");
-        this.creditLine = Util.leerFloat("Escribe los creditLine");
-        this.beginBalance = Util.leerFloat("Escribe la beginBalance");     
-        this.bBTs = Util.leerFecha("Escribe la fecha");
-         System.out.println("Escribe tipo de cuenta /n 0 = Standar /n 1 = Credit");
-        if(Util.esBoolean()){
-        this.type = AccountType.STANDAR;
-                   this.type = AccountType.CREDIT;
-        }
+        System.out.println("Introduce el balance");
+        this.balance = Util.leerDouble();
+         System.out.println("Escribe los creditLine");
+        this.creditLine = Util.leerDouble();
         
-    }
-   public void getDatos(){
-   
-            System.out.println("Descripcion de la cuenta" + this.desc);
-            System.out.println("Balance de la cuenta:" + this.balance);
-            System.out.println("Linea de credito:" + this.creditLine);
-            System.out.println("Balance inicial:" + this.beginBalance);
-            System.out.println("Fecha de creacion:" + this.bBTs);
-            System.out.println("Tipo de cuenta:" + this.type);
-           
-          for(Movement M : movementList){
-                System.out.println(M.getId());
+        this.bBTs = Util.leerFecha("Escribe la fecha");
+        int respu = Util.leerInt("Escribe tipo de cuenta  0 = Standar "
+                + " 1 = Credit");
+        if (respu == 0) {
+            this.type = AccountType.STANDAR;
+        } else if (respu == 1) {
+            this.type = AccountType.CREDIT;
+        } else {
+            System.out.println("No es ni 1 ni 2");
         }
     }
-    
+
+    public void getDatos() {
+        
+
+        System.out.println("-----------------ID Cuentas "+this.id+"----------------------");
+        System.out.println("ID de la cuenta " + this.id);
+        System.out.println("Descripcion de la cuenta" + this.desc);
+        System.out.println("Balance de la cuenta:" + this.balance);
+        System.out.println("Linea de credito:" + this.creditLine);
+        System.out.println("Fecha de creacion:" + this.bBTs);
+        System.out.println("Tipo de cuenta:" + this.type);
+
+        for (Movement M : movementList) {
+            System.out.println(M.getId());
+        }
+        System.out.println("----------------------------------------------------------");
+    }
+  public void addMovement(Movement mov) {
+
+        this.movementList.add(mov);
+
+    }
+
     
 }

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ImplementFich implements InterfaceDAO, Serializable {
 
     private File client = new File("client.obj");
 
-    private static void dumpArrayFich(List<Client> clientList, File recursos) throws IOException {
+    private static void dumpArrayFich(Set<Client> clientList, File recursos) {
         ObjectOutputStream oos = null;
 
         try {
@@ -57,8 +58,8 @@ public class ImplementFich implements InterfaceDAO, Serializable {
 
     }
 
-    private static List<Client> dumpFichArray(File client) {
-        List<Client> clientList = new ArrayList<>();
+    private static Set<Client> dumpFichArray(File client) {
+        Set<Client> clientList = new HashSet<>();
         ObjectInputStream ois = null;
         Client clie;
 
@@ -138,63 +139,141 @@ public class ImplementFich implements InterfaceDAO, Serializable {
     }
 
     @Override
-    public Client getDataClient(Integer id) {
+    public Client getDataClient(BigDecimal id) {
         Client c = null;
-        List<Client> clientArray = dumpFichArray(client);
-        for (int i = 0; i < clientArray.size(); i++) {
-            if (clientArray.get(i).getId().equals(id)) {
-                c = new Client();
-                c = clientArray.get(i);
-                i = clientArray.size() + 1;
+        Set<Client> clientArray = dumpFichArray(client);
+        for (Client cli : clientArray) {
+            if (cli.getId().equals(id)) {
+                c = cli;
             }
         }
         return c;
     }
 
-    public Set<Account> getAccountClient(Integer id) {
-        List<Client> clientArray = dumpFichArray(client);
-        Set<Account> set = new HashSet<Account>();
-        for (int i = 0; i < clientArray.size(); i++) {
-            if (clientArray.get(i).getId().equals(id)) {
-                set = clientArray.get(i).getAccountList();
+    public Set<Account> getAccountClient(BigDecimal id) {
+        Set<Client> clientArray = dumpFichArray(client);
+        Set<Account> set = new HashSet<>();
+        for (Client cli : clientArray) {
+            if (cli.getId().equals(id)) {
+                set = cli.getAccountList();
             }
         }
         return set;
     }
 
     @Override
-    public void makeAccountClient(Integer id, Account ac) {
-        List<Client> clientArray = dumpFichArray(client);
-        for (int i = 0; i < clientArray.size(); i++) {
-            if (clientArray.get(i).getId().equals(id)) {
-               clientArray.get(i).getAccountList().add(ac);
+    public void makeAccountClient(BigDecimal id, Account ac) {
+        MiObjectOutputStream moos = null;
+        Set<Client> clientArray = dumpFichArray(client);
+        List<Client> clientList = devolverArrayList(clientArray);
+
+        for (int i = 0; i < clientList.size(); i++) {
+            if (clientList.get(i).getId().equals(id)) {
+                clientList.get(i).addAccount(ac);
+            }
+        }
+        clientArray = devolverSet(clientList);
+        dumpArrayFich(clientArray, client);
+
+    }
+
+    @Override
+    public void addClientAccount(BigDecimal idcuen, BigDecimal idcli) {
+        Account account = new Account();
+        MiObjectOutputStream moos = null;
+        Set<Client> clientArray = dumpFichArray(client);
+        List<Client> clientList = devolverArrayList(clientArray);
+        account = getDateAccount(idcuen);
+
+        for (int i = 0; i < clientList.size(); i++) {
+            if (clientList.get(i).getId().equals(idcli)) {
+                clientList.get(i).addAccount(account);
+            }
+
+        }
+
+        clientArray = devolverSet(clientList);
+        dumpArrayFich(clientArray, client);
+    }
+
+    @Override
+    public Account getDateAccount(BigDecimal id) {
+        Account account = new Account();
+        Set<Client> clientArray = dumpFichArray(client);
+
+        for (Client cli : clientArray) {
+            for (Account ac : cli.getAccountList()) {
+                if (ac.getId().equals(id)) {
+                    account = ac;
+                }
+
+            }
+        }
+        return account;
+    }
+
+    @Override
+    public void makeMovements(BigDecimal id, Double amount, String desc, Movement M) {
+
+        Set<Client> clientArray = dumpFichArray(client);
+        List<Client> cliArray = devolverArrayList(clientArray);
+        for (Client cli : cliArray) {
+            for (Account ac : cli.getAccountList()) {
+                if (ac.getId().equals(id)) {
+                    if (desc.equals("payment")) {
+                        Double balance = ac.getBalance();
+                        balance -= amount;
+                        ac.setBalance(balance);
+                        ac.addMovement(M);
+                    } else if (desc.equals("deposit")) {
+                        Double balance = ac.getBalance();
+                        balance += amount;
+                        ac.setBalance(balance);
+                        ac.addMovement(M);
+                    }
+
+                }
+
             }
         }
 
+        clientArray = devolverSet(cliArray);
+        dumpArrayFich(clientArray, client);
+
     }
 
     @Override
-    public void addClientAccount(Integer idcuen, Integer idcli
+    public Set<Movement> getMovementAccount(BigDecimal id
     ) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Set<Client> clientArray = dumpFichArray(client);
+        Set<Movement> set = new HashSet<>();
+
+        for (Client cli : clientArray) {
+            for (Account ac : cli.getAccountList()) {
+                if (ac.getId().equals(id)) {
+                    set = ac.getMovementList();
+                }
+            }
+        }
+        return set;
     }
 
-    @Override
-    public Account getDateAccount(Integer id
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private List<Client> devolverArrayList(Set<Client> clientArray) {
+        List<Client> clientList = new ArrayList<>();
+
+        for (Client cli : clientArray) {
+            clientList.add(cli);
+        }
+        return clientList;
     }
 
-    @Override
-    public void makeMovements(Integer id
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    private Set<Client> devolverSet(List<Client> clientList) {
+        Set<Client> clientArray = new HashSet<>();
 
-    @Override
-    public Movement getMovementAccount(Integer id
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Client cli : clientList) {
+            clientArray.add(cli);
+        }
+        return clientArray;
     }
 
 }

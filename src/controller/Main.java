@@ -5,6 +5,7 @@
  */
 package controller;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ import model.Client;
 import model.ImplementBD;
 import model.ImplementFich;
 import model.InterfaceDAO;
+import model.Movement;
 import utilidades.Util;
 
 /**
@@ -29,7 +31,6 @@ public class Main {
         int opc = 0;
         Client c;
         Account A;
-
         int eleccion;
         do {
             System.out.println("Elige en que quieres guardar"
@@ -56,42 +57,63 @@ public class Main {
                     break;
                 case 2:
 
-                    Integer i = Util.leerInt("Introduce el id del "
-                            + "cliente a buscar");
+                    BigDecimal i = BigDecimal.valueOf(Util.leerInt("Introduce el id del "
+                            + "cliente a buscar"));
                     c = dao.getDataClient(i);
 
                     c.getDatos();
                     break;
                 case 3:
                     Set<Account> cuentasCli = new HashSet<>();
-                    Integer idCuentaCli = Util.leerInt("Introduce el id del usuario"
-                            + "a consultar cuentas");
+                    BigDecimal idCuentaCli = BigDecimal.valueOf(Util.leerInt("Introduce el id del usuario"
+                            + "a consultar cuentas"));
                     cuentasCli = dao.getAccountClient(idCuentaCli);
 
                     for (Account Alist : cuentasCli) {
                         Alist.getDatos();
-                        break;
                     }
+                    break;
                 case 4:
                     Integer idMakeCli = Util.leerInt("Introduce el id del usuario"
                             + "al que se le creara una cuenta");
+                    BigDecimal idMcli = BigDecimal.valueOf(idMakeCli);
                     A = new Account();
                     A.setDatos();
-                    
-                    dao.makeAccountClient(idMakeCli,A);
-                    
+
+                    dao.makeAccountClient(idMcli, A);
+
                     break;
                 case 5:
+                    BigDecimal idCuenta = BigDecimal.valueOf(Util.leerInt("Introducir id de la cuenta"
+                            + "a la cual añadir un usuario"));
+                    BigDecimal idCli = BigDecimal.valueOf(Util.leerInt("Introducir id del cliente"
+                            + "al añadir un usuario"));
 
+                    dao.addClientAccount(idCuenta, idCli);
                     break;
                 case 6:
-
+                    Account ac = new Account();
+                    ac = dao.getDateAccount(BigDecimal.valueOf(Util.leerInt("Introduce el id de la cuenta: ")));
+                    ac.getDatos();
                     break;
                 case 7:
-
+                    Movement mov = new Movement();
+                    mov.setDatos();
+                    BigDecimal idCue = BigDecimal.valueOf(Util.leerInt("introduce la cuenta"
+                            + "a realizar el movimiento"));
+                    System.out.println("introduce la cantidad de dinero");
+                    Double money = Util.leerDouble();
+                    String desc = mov.getDesc();
+                    dao.makeMovements(idCue, money, desc, mov);
                     break;
                 case 8:
-
+                    Set<Movement> Movements = new HashSet<>();
+                    BigDecimal idCuentaM = BigDecimal.valueOf(Util.leerInt("Introduce el id de"
+                            + "la cuenta a consultar los movimientos"));
+                    Movements = dao.getMovementAccount(idCuentaM);
+                    for (Movement M : Movements) {
+                        M.getDatos();
+                    }
                     break;
 
             }
