@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -160,6 +162,23 @@ public class Util {
 			error=false;
 			try{
 				num=Integer.parseInt(introducirCadena());
+			}
+			catch(NumberFormatException e){
+				System.out.println("Error, el dato no es numérico. Introduce de nuevo: ");
+				error=true;
+			}
+		}while(error);
+		return num;
+	}
+        
+        public static Float leerBigDecimal(String mensaje){
+		float num = 0;
+		boolean error;
+		System.out.println(mensaje);
+		do{
+			error=false;
+			try{
+				num=Float.parseFloat(introducirCadena());
 			}
 			catch(NumberFormatException e){
 				System.out.println("Error, el dato no es numérico. Introduce de nuevo: ");

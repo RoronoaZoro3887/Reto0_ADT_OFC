@@ -5,36 +5,35 @@
  */
 package model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Scanner;
 import utilidades.Util;
 
 /**
  *
  * @author 2dam
  */
-public class Movement implements Serializable {
-
-    private BigDecimal id;
+public class Movement {
+    Scanner sc = new Scanner(System.in);
+    
+    private Integer id;
     private String desc;
-    private Double balance; // dinero que tienes
-    private Double amount; // dinero que tienes
-    private LocalDate bBTs;
+    private Double balance;
+    private Double amount;
+    private Timestamp bBTs;
     private BigDecimal accountId;
-    private static final AtomicInteger movementId = new AtomicInteger(0);
-    private BigDecimal IdIncremet;
 
     public Movement() {
-
+        
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -46,6 +45,10 @@ public class Movement implements Serializable {
         this.desc = desc;
     }
 
+    public Double getBalance() {
+        return balance;
+    }
+
     public Double getAmount() {
         return amount;
     }
@@ -54,19 +57,15 @@ public class Movement implements Serializable {
         this.amount = amount;
     }
 
-    public Double getBalance() {
-        return balance;
-    }
-
     public void setBalance(Double balance) {
         this.balance = balance;
     }
 
-    public LocalDate getbBTs() {
+    public Timestamp getbBTs() {
         return bBTs;
     }
 
-    public void setbBTs(LocalDate bBTs) {
+    public void setbBTs(Timestamp bBTs) {
         this.bBTs = bBTs;
     }
 
@@ -78,27 +77,25 @@ public class Movement implements Serializable {
         this.accountId = accountId;
     }
 
-    public void setDatos() {
-        IdIncremet = BigDecimal.valueOf(movementId.incrementAndGet());
-        this.id = IdIncremet;
-        this.desc = Util.introducirCadena("Escribe el desc");
-        System.out.println("Introduce el balance");
-        this.balance = Util.leerDouble();
-        System.out.println("Introduce el amount");
-        this.amount = Util.leerDouble();
-        this.bBTs = Util.leerFecha("Escribe la fecha");
-        this.accountId = BigDecimal.valueOf(Util.leerInt("Escribe id de la cuenta que realizara el movimiento"));
-
-    }
-
     public void getDatos() {
-        System.out.println("--------------ID Movimiento " + this.id + "----------------------");
-        System.out.println("Descripcion del movimiento:" + this.desc);
-        System.out.println("Balance del movimiento:" + this.balance);
-        System.out.println("Balance del amount:" + this.amount);
-        System.out.println("Fecha del movimiento:" + this.bBTs);
-        System.out.println("Cuenta que realizo el movimiento:" + this.accountId);
-        System.out.println("----------------------------------------------------------");
-
+        System.out.println("ID del movimiento: "+id);
+        System.out.println("Descripcion: "+desc);
+        System.out.println("Saldo: "+balance);
+        System.out.println("Cantidad: "+amount);
+        System.out.println("Fecha de movimiento: "+bBTs);
+        System.out.println("ID de la cuenta: "+accountId);
+        System.out.println(" ");
     }
+    
+    public void setDatosBD() {
+        
+        
+    }
+
+    public void setDatos() {
+        
+    }
+    
+    
+    
 }

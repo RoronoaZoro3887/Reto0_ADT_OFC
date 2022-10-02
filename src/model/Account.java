@@ -5,40 +5,38 @@
  */
 package model;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.HashSet;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import utilidades.Util;
 
 /**
  *
  * @author 2dam
  */
-public class Account implements Serializable {
-
-    private Integer id;
+public class Account {
+    
+    private BigDecimal id;
     private String desc;
     private Double balance;
     private Double creditLine;
-    private LocalDate bBTs;
+    private Double beginBalance;
+    private Timestamp bBTs;
     private AccountType type;
     private Set<Movement> movementList;
-    private static final AtomicInteger accountId = new AtomicInteger(0); 
-    private Integer IdIncremet ;
     
 
     public Account() {
-        movementList = new HashSet<>();
-   
+        
     }
 
-    public Integer getId() {
+    
+    
+    public BigDecimal getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(BigDecimal id) {
         this.id = id;
     }
 
@@ -66,11 +64,19 @@ public class Account implements Serializable {
         this.creditLine = creditLine;
     }
 
-    public LocalDate getbBTs() {
+    public Double getBeginBalance() {
+        return beginBalance;
+    }
+
+    public void setBeginBalance(Double beginBalance) {
+        this.beginBalance = beginBalance;
+    }
+
+    public Timestamp getbBTs() {
         return bBTs;
     }
 
-    public void setbBTs(LocalDate bBTs) {
+    public void setbBTs(Timestamp bBTs) {
         this.bBTs = bBTs;
     }
 
@@ -90,48 +96,48 @@ public class Account implements Serializable {
         this.movementList = movementList;
     }
 
-    public void setDatos() {
-        IdIncremet= accountId.incrementAndGet();
-        this.id = IdIncremet;
-        this.desc = Util.introducirCadena("Escribe el desc");
-        System.out.println("Introduce el balance");
-        this.balance = Util.leerDouble();
-         System.out.println("Escribe los creditLine");
-        this.creditLine = Util.leerDouble();
-        
-        this.bBTs = Util.leerFecha("Escribe la fecha");
-        int respu = Util.leerInt("Escribe tipo de cuenta  0 = Standar "
-                + " 1 = Credit");
-        if (respu == 0) {
-            this.type = AccountType.STANDAR;
-        } else if (respu == 1) {
-            this.type = AccountType.CREDIT;
-        } else {
-            System.out.println("No es ni 1 ni 2");
-        }
-    }
-
     public void getDatos() {
-        
-
-        System.out.println("-----------------ID Cuentas "+this.id+"----------------------");
-        System.out.println("ID de la cuenta " + this.id);
-        System.out.println("Descripcion de la cuenta" + this.desc);
-        System.out.println("Balance de la cuenta:" + this.balance);
-        System.out.println("Linea de credito:" + this.creditLine);
-        System.out.println("Fecha de creacion:" + this.bBTs);
-        System.out.println("Tipo de cuenta:" + this.type);
-
-        for (Movement M : movementList) {
-            System.out.println(M.getId());
+        System.out.println("ID  de la cuenta "+id);
+        System.out.println("Saldo "+balance);
+        System.out.println("Saldo inicial "+beginBalance);
+        System.out.println("Fecha saldo inicial "+bBTs);
+        System.out.println("Linea de credito "+creditLine);
+        System.out.println("Descripcion: "+desc);
+        System.out.println("Tipo: "+type);
+        System.out.println("Movimientos: ");
+        System.out.println(movementList.size());
+        if(movementList!=null){
+            for (Movement movement : movementList) {
+                movement.getDatos();
+            }
+            
+        }else{
+            System.out.println("No tiene movimientos");
         }
-        System.out.println("----------------------------------------------------------");
-    }
-  public void addMovement(Movement mov) {
-
-        this.movementList.add(mov);
-
+        System.out.println(" ");
+        
     }
 
+    public void setDatosBD() {
+        
+        System.out.println("Introduce el sueldo inicial: ");
+        beginBalance = Util.leerDouble();
+        balance = beginBalance;
+        System.out.println("Introduce la linea de credito: ");
+        creditLine = Util.leerDouble();
+        desc = Util.introducirCadena("Introduce la descripcion de la cuenta: ");
+        System.out.println("Elige entre tipo Standard(S) o Credito(C)");
+        char elegir = Util.leerChar('S', 'C');
+        if(elegir =='S'){
+           type= AccountType.STANDAR;
+        }else if(elegir =='C'){
+            type = AccountType.CREDIT;
+        }
+        
+        
+    }
+    
+    
+    
     
 }
