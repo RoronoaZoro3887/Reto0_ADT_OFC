@@ -276,4 +276,14 @@ public class ImplementFich implements InterfaceDAO, Serializable {
         return clientArray;
     }
 
+    @Override
+    public boolean comprobarCuenta(BigDecimal idCuenta) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean comprobarCliente(BigDecimal idCliente) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
