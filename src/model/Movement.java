@@ -6,6 +6,7 @@
 package model;
 
 import java.time.LocalDate;
+import utilidades.Util;
 
 /**
  *
@@ -80,7 +81,25 @@ public class Movement {
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
     }
+      public void setDatos(){     
+         
     
-    
-    
+        this.desc = Util.introducirCadena("Escribe el desc");
+        this.balance = Util.leerFloat("Introduce el balance");
+        this.creditLine = Util.leerFloat("Escribe los creditLine");
+        this.beginBalance = Util.leerFloat("Escribe la beginBalance");     
+        this.bBTs = Util.leerFecha("Escribe la fecha");
+        this.accountId = Util.leerInt("Escribe id de la cuenta que realizara el movimiento");
+      
+    }
+   public void getDatos(){
+   
+            System.out.println("Descripcion del movimiento:" + this.desc);
+            System.out.println("Balance del movimiento:" + this.balance);
+            System.out.println("Linea de credito del movimiento:" + this.creditLine);
+            System.out.println("Balance inicial del movimiento:" + this.beginBalance);
+            System.out.println("Fecha del movimiento:" + this.bBTs);
+            System.out.println("Cuenta que realizo el movimiento:" + this.accountId);
+          
+    }
 }
